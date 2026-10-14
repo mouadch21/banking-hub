@@ -1,5 +1,5 @@
 
-# BankingHubFrontend
+
 # Banking Hub
 
 Banking Hub is an academic full-stack banking application for managing customers, accounts, balances, and transactions. It includes an Angular web client and a Spring Boot REST API backed by MySQL.
