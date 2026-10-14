@@ -10,7 +10,7 @@ Banking Hub is an academic full-stack banking application for managing customers
 
 - Customer creation, editing, search, and deletion
 - Bank account creation, account details, and account history
-- Deposit, withdrawal, and account-to-account transfer workflows
+- Deposit, withdraw, and account-to-account transfer workflows
 - Transaction list and per-account transaction history
 - Currency-aware balance summaries; balances in different currencies are shown separately and are not converted
 - REST API documentation through Swagger UI
