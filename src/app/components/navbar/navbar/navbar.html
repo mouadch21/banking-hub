@@ -1,0 +1,23 @@
+
+<nav class="navbar">
+  <a class="brand" routerLink="/dashboard">Banking-Hub</a>
+
+  <div class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      Dashboard
+    </a>
+
+    <a routerLink="/customers" routerLinkActive="active">
+      Clients
+    </a>
+
+    <a routerLink="/accounts" routerLinkActive="active">
+      Comptes
+    </a>
+
+    <a routerLink="/transactions" routerLinkActive="active">
+      Transactions
+    </a>
+  </div>
+</nav>

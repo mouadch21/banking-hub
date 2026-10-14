@@ -1,0 +1,35 @@
+
+.main-content {
+	width: min(100%, 1500px);
+	min-height: calc(100vh - 72px);
+	margin-inline: auto;
+	padding: 28px clamp(18px, 3vw, 44px) 56px;
+}
+
+.main-content > * {
+	animation: view-enter 320ms ease-out both;
+}
+
+@keyframes view-enter {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 640px) {
+	.main-content {
+		min-height: calc(100vh - 112px);
+		padding: 20px 14px 36px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.main-content > * {
+		animation: none;
+	}
+}

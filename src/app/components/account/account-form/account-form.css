@@ -1,0 +1,50 @@
+:host {
+	display: block;
+}
+
+.account-form-page {
+	padding-bottom: 40px;
+}
+
+.account-form-page .card {
+	overflow: hidden;
+}
+
+.account-form-page .card-header h3 {
+	color: inherit;
+	font-family: 'Manrope', sans-serif;
+	font-size: 21px;
+	font-weight: 800;
+}
+
+.account-form-page .form-label {
+	color: var(--dark, #273a32);
+	font-size: 14px;
+	font-weight: 700;
+	text-transform: none;
+}
+
+.account-form-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.account-form-actions .btn {
+	min-height: 44px;
+}
+
+@media (max-width: 767.98px) {
+	.account-form-page {
+		padding: 20px 14px 32px;
+	}
+
+	.account-form-actions {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.account-form-actions .btn {
+		width: 100%;
+	}
+}

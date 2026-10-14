@@ -1,0 +1,120 @@
+
+<!-- src/app/components/account/account-details.component.html -->
+ 
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <a routerLink="/accounts" class="btn btn-secondary mb-4">
+        <i class="bi bi-arrow-left me-2"></i> Retour aux comptes
+      </a>
+    </div>
+  </div>
+ 
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+ 
+  <div *ngIf="!loading && account" class="row">
+    <!-- Informations du compte -->
+    <div class="col-md-8">
+      <div class="card shadow-lg mb-4">
+        <div class="card-header bg-primary text-white py-4">
+          <h3 class="mb-0">
+            <i class="bi bi-credit-card me-2"></i>
+            Détails du Compte
+          </h3>
+        </div>
+        <div class="card-body p-5">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Numéro de Compte</p>
+              <h4 class="fw-bold">{{ account.accountNumber }}</h4>
+            </div>
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Type de Compte</p>
+              <h4 class="fw-bold">{{ getAccountTypeLabel(account.accountType) }}</h4>
+            </div>
+          </div>
+ 
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Solde Actuel</p>
+              <h3 class="text-success fw-bold">{{ account.balance | number: '1.2-2' }}</h3>
+            </div>
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Devise</p>
+              <h4 class="fw-bold">{{ account.currency }}</h4>
+            </div>
+          </div>
+ 
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Statut</p>
+              <span class="badge bg-success fs-6">{{ account.status }}</span>
+            </div>
+            <div class="col-md-6">
+              <p class="text-muted mb-1">Date de Création</p>
+              <p class="fw-bold">{{ account.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          </div>
+ 
+          <div class="d-grid gap-2 d-md-flex">
+            <a routerLink="/transactions/deposit" class="btn btn-success btn-lg">
+              <i class="bi bi-plus-circle me-2"></i> Dépôt
+            </a>
+            <a routerLink="/transactions/withdraw" class="btn btn-warning btn-lg">
+              <i class="bi bi-dash-circle me-2"></i> Retrait
+            </a>
+            <a routerLink="/transactions/transfer" class="btn btn-info btn-lg">
+              <i class="bi bi-arrow-left-right me-2"></i> Virement
+            </a>
+            <a [routerLink]="['/accounts', account.id, 'history']" class="btn btn-secondary btn-lg">
+              <i class="bi bi-clock-history me-2"></i> Historique
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Informations du titulaire -->
+    <div class="col-md-4">
+      <div class="card shadow-lg">
+        <div class="card-header bg-info text-white py-4">
+          <h5 class="mb-0">
+            <i class="bi bi-person-circle me-2"></i>
+            Titulaire du Compte
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <p class="text-muted mb-1">Nom</p>
+            <p class="fw-bold">{{ customer ? getCustomerName(customer) : (loadingCustomer ? 'Chargement...' : '—') }}</p>
+          </div>
+          <div class="mb-3">
+            <p class="text-muted mb-1">Email</p>
+            <p class="fw-bold">{{ customer?.email || '—' }}</p>
+          </div>
+          <div class="mb-3">
+            <p class="text-muted mb-1">Téléphone</p>
+            <p class="fw-bold">{{ customer?.phone || '—' }}</p>
+          </div>
+          <div class="mb-3">
+            <p class="text-muted mb-1">Adresse</p>
+            <p class="fw-bold">{{ customer?.address || '—' }}</p>
+          </div>
+          <div class="mb-3">
+            <p class="text-muted mb-1">Ville</p>
+            <p class="fw-bold">{{ customer?.city || '—' }}</p>
+          </div>
+          <div>
+            <p class="text-muted mb-1">Pays</p>
+            <p class="fw-bold">{{ customer?.country || '—' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 

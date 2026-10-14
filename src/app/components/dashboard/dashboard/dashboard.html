@@ -1,0 +1,209 @@
+
+<div class="dashboard container-fluid py-4 px-3 px-lg-4">
+
+  <!-- En-tête -->
+  <div class="d-flex flex-column flex-md-row justify-content-between
+              align-items-md-center gap-3 mb-4">
+
+    <div>
+      
+      <h1 class="dashboard-title mt-2 mb-1">Tableau de bord</h1>
+      <p class="text-muted mb-0">
+        Gérez et suivez votre activité bancaire en un seul endroit.
+      </p>
+    </div>
+
+    <div class="dashboard-date">
+      <i class="bi bi-calendar3 me-2"></i>
+      Vue d'ensemble
+    </div>
+
+  </div>
+
+  <!-- Cartes statistiques -->
+  <div class="row g-4 mb-4">
+
+    <!-- Clients -->
+    <div class="col-12 col-sm-6 col-xl-4">
+      <div class="stat-card stat-blue h-100">
+        <div class="stat-top">
+          <div>
+            <p class="stat-label">Nombre de clients</p>
+            <h2 class="stat-value">
+              {{ totalCustomers | number }}
+            </h2>
+            <span class="stat-description">
+              <i class="bi bi-people me-1"></i>
+              Clients enregistrés
+            </span>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-people-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comptes -->
+    <div class="col-12 col-sm-6 col-xl-4">
+      <div class="stat-card stat-purple h-100">
+        <div class="stat-top">
+          <div>
+            <p class="stat-label">Nombre de comptes</p>
+            <h2 class="stat-value">
+              {{ totalAccounts | number }}
+            </h2>
+            <span class="stat-description">
+              <i class="bi bi-wallet2 me-1"></i>
+              Comptes bancaires
+            </span>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-credit-card-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solde total -->
+    <div class="col-12 col-sm-6 col-xl-4">
+      <div class="stat-card stat-green h-100">
+        <div class="stat-top">
+          <div>
+            <p class="stat-label">Soldes par devise</p>
+            <div class="currency-balances" *ngIf="currencyBalances.length; else emptyBalances">
+              <div class="currency-balance-line" *ngFor="let item of currencyBalances">
+                <span class="currency-balance-code">{{ item.currency }}</span>
+                <strong class="currency-balance-amount">{{ item.balance | number:'1.2-2' }} {{ item.currency }}</strong>
+              </div>
+            </div>
+            <ng-template #emptyBalances>
+              <p class="currency-balance-empty mb-0">Aucun solde disponible</p>
+            </ng-template>
+            <span class="stat-description">
+              <i class="bi bi-safe2 me-1"></i>
+              Sous-totaux séparés, sans conversion
+            </span>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Section transactions -->
+  <div class="card transactions-card border-0">
+
+    <div class="transactions-header">
+      <div>
+        <h5 class="mb-1 fw-bold">Toutes les transactions</h5>
+        <p class="text-muted mb-0 small">
+          Historique complet des opérations bancaires.
+        </p>
+      </div>
+
+      <span class="transaction-count">
+        <i class="bi bi-arrow-left-right me-1"></i>
+        {{ recentTransactions.length }} opérations
+      </span>
+    </div>
+
+    <!-- Chargement -->
+    <div *ngIf="loading" class="empty-state">
+      <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p class="text-muted mb-0">Chargement des transactions...</p>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive" *ngIf="!loading">
+      <table class="table transaction-table align-middle mb-0">
+
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Montant</th>
+            <th>Compte source</th>
+            <th>Compte destination</th>
+            <th>Statut</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <!-- Aucune transaction -->
+          <tr *ngIf="recentTransactions.length === 0">
+            <td colspan="6">
+              <div class="empty-state">
+                <i class="bi bi-receipt empty-icon"></i>
+                <h6 class="fw-semibold mt-3">Aucune transaction</h6>
+                <p class="text-muted mb-0">
+                  Les opérations apparaîtront ici lorsqu'elles seront disponibles.
+                </p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Liste des transactions -->
+          <tr *ngFor="let transaction of recentTransactions">
+
+            <td>
+              <span class="type-badge">
+                {{ getTransactionIcon(transaction.transactionType) }}
+                {{ transaction.transactionType }}
+              </span>
+            </td>
+
+            <td class="fw-bold text-nowrap">
+              {{ transaction.amount | number:'1.2-2' }} {{ transaction.currency || '—' }}
+            </td>
+
+            <td class="text-muted">
+              {{ transaction.fromAccountNumber || '—' }}
+            </td>
+
+            <td class="text-muted">
+              {{ transaction.toAccountNumber || '—' }}
+            </td>
+
+            <td>
+              <span
+                class="status-badge"
+                [ngClass]="getStatusBadgeClass(transaction.status)">
+                {{ transaction.status }}
+              </span>
+            </td>
+
+            <td class="text-nowrap text-muted">
+              {{ transaction.createdAt
+                  ? (transaction.createdAt | date:'dd/MM/yyyy HH:mm')
+                  : '—' }}
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pied du tableau -->
+    <div class="transactions-footer" *ngIf="!loading">
+      <span class="text-muted small">
+        Historique des opérations
+      </span>
+      <span class="text-muted small">
+        {{ recentTransactions.length }} résultat(s)
+      </span>
+    </div>
+
+  </div>
+
+</div>

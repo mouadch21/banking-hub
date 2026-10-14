@@ -1,0 +1,37 @@
+<div class="container-fluid py-4">
+	<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+		<div>
+			<h1 class="h2 mb-1">Historique du compte</h1>
+			<p class="text-muted mb-0">Compte #{{ accountId }}</p>
+		</div>
+		<a [routerLink]="['/accounts', accountId]" class="btn btn-secondary">
+			<i class="bi bi-arrow-left me-2"></i>Retour au compte
+		</a>
+	</div>
+	<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+	<div *ngIf="loading" class="text-center py-5">
+		<span class="spinner-border text-primary" role="status"></span>
+		<p class="text-muted mt-3">Chargement de l’historique...</p>
+	</div>
+	<section class="card shadow-sm" *ngIf="!loading && !errorMessage">
+		<div class="table-responsive">
+			<table class="table table-hover mb-0">
+				<thead><tr><th>Date</th><th>Type</th><th>Montant</th><th>Depuis</th><th>Vers</th><th>Statut</th><th>Description</th></tr></thead>
+				<tbody>
+					<tr *ngIf="transactions.length === 0">
+						<td colspan="7" class="text-center text-muted py-5">Aucune transaction pour ce compte.</td>
+					</tr>
+					<tr *ngFor="let transaction of transactions">
+						<td class="text-nowrap">{{ transaction.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+						<td>{{ transaction.transactionType }}</td>
+						<td class="text-nowrap">{{ transaction.amount | number: '1.2-2' }} {{ transaction.currency }}</td>
+						<td>{{ transaction.fromAccountNumber || '—' }}</td>
+						<td>{{ transaction.toAccountNumber || '—' }}</td>
+						<td><span class="badge" [ngClass]="transaction.status === 'SUCCESS' ? 'bg-success' : transaction.status === 'FAILED' ? 'bg-danger' : 'bg-warning'">{{ transaction.status }}</span></td>
+						<td>{{ transaction.description || '—' }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,48 @@
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-12 col-md-8">
+			<section class="card shadow-lg">
+				<header class="card-header bg-warning py-4">
+					<h3 class="mb-0"><i class="bi bi-dash-circle me-2"></i>Effectuer un retrait</h3>
+				</header>
+				<div class="card-body p-4 p-md-5">
+					<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+					<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+						<div class="mb-3">
+							<label for="accountId" class="form-label">Compte *</label>
+							<select id="accountId" class="form-select form-select-lg" formControlName="accountId"
+								[class.is-invalid]="submitted && f['accountId'].invalid">
+								<option [ngValue]="0" disabled>Choisir un compte...</option>
+								<option *ngFor="let account of accounts" [ngValue]="account.id">
+									{{ account.accountNumber }} - {{ account.balance | number: '1.2-2' }} {{ account.currency }}
+								</option>
+							</select>
+							<div class="invalid-feedback" *ngIf="submitted && f['accountId'].invalid">Veuillez choisir un compte.</div>
+						</div>
+						<div class="mb-3">
+							<label for="amount" class="form-label">Montant *</label>
+							<div class="input-group input-group-lg">
+								<input id="amount" type="number" min="0.01" step="0.01" class="form-control"
+									formControlName="amount" [class.is-invalid]="submitted && f['amount'].invalid" />
+								<span class="input-group-text">{{ getSelectedCurrency() }}</span>
+							</div>
+							<div class="invalid-feedback d-block" *ngIf="submitted && f['amount'].invalid">Saisissez un montant supérieur à zéro.</div>
+						</div>
+						<div class="mb-4">
+							<label for="description" class="form-label">Description</label>
+							<textarea id="description" class="form-control" rows="3" formControlName="description"
+								placeholder="Motif du retrait"></textarea>
+						</div>
+						<div class="d-grid gap-2 d-md-flex">
+							<button type="submit" class="btn btn-warning btn-lg" [disabled]="loading">
+								<span *ngIf="!loading"><i class="bi bi-check-circle me-2"></i>Effectuer le retrait</span>
+								<span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2"></span>En cours...</span>
+							</button>
+							<a routerLink="/transactions" class="btn btn-light btn-lg"><i class="bi bi-arrow-left me-2"></i>Retour</a>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

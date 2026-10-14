@@ -1,0 +1,72 @@
+<div class="container mt-5 account-form-page">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-8">
+			<section class="card shadow-lg">
+				<header class="card-header bg-primary text-white py-4">
+					<h3 class="mb-0"><i class="bi bi-credit-card-2-front me-2"></i> Ouvrir un nouveau compte</h3>
+				</header>
+				<div class="card-body p-4 p-md-5">
+					<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+					<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+						<div class="mb-4">
+							<label for="customerId" class="form-label">Titulaire *</label>
+							<select id="customerId" class="form-select form-select-lg" formControlName="customerId"
+								[class.is-invalid]="submitted && f['customerId'].invalid">
+								<option [ngValue]="0" disabled>
+									{{ loadingCustomers ? 'Chargement des clients...' : 'Choisir un client' }}
+								</option>
+								<option *ngFor="let customer of customers" [ngValue]="customer.id">
+									{{ getCustomerName(customer) }}
+								</option>
+							</select>
+							<div class="invalid-feedback" *ngIf="submitted && f['customerId'].invalid">Sélectionnez un titulaire.</div>
+						</div>
+
+						<div class="row g-3 mb-4">
+							<div class="col-md-6">
+								<label for="accountType" class="form-label">Type de compte *</label>
+								<select id="accountType" class="form-select form-select-lg" formControlName="accountType">
+									<option value="CHECKING">Compte courant</option>
+									<option value="SAVINGS">Compte épargne</option>
+								</select>
+							</div>
+							<div class="col-md-6">
+								<label for="currency" class="form-label">Devise *</label>
+								<select id="currency" class="form-select form-select-lg" formControlName="currency">
+									<option value="USD">USD - Dollar américain</option>
+									<option value="EUR">EUR - Euro</option>
+									<option value="MAD">MAD - Dirham marocain</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="mb-4">
+							<label for="initialBalance" class="form-label">Solde initial *</label>
+							<div class="input-group input-group-lg">
+								<input id="initialBalance" type="number" min="0" step="0.01" class="form-control"
+									formControlName="initialBalance" [class.is-invalid]="submitted && f['initialBalance'].invalid" />
+								<span class="input-group-text">{{ f['currency'].value }}</span>
+							</div>
+							<div class="invalid-feedback d-block" *ngIf="submitted && f['initialBalance'].invalid">
+								Le solde initial doit être égal ou supérieur à zéro.
+							</div>
+						</div>
+
+						<div class="account-form-actions">
+							<button type="submit" class="btn btn-primary btn-lg" [disabled]="loading || loadingCustomers">
+								<span *ngIf="!loading"><i class="bi bi-check-circle me-2"></i>Créer le compte</span>
+								<span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2"></span>Création...</span>
+							</button>
+							<button type="button" class="btn btn-light btn-lg" (click)="resetForm()" [disabled]="loading">
+								<i class="bi bi-arrow-counterclockwise me-2"></i>Réinitialiser
+							</button>
+							<a routerLink="/accounts" class="btn btn-secondary btn-lg">
+								<i class="bi bi-arrow-left me-2"></i>Retour aux comptes
+							</a>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,147 @@
+:host {
+	display: block;
+	color: var(--dark, #273a32);
+}
+
+.container {
+	padding-top: 28px;
+	padding-bottom: 40px;
+}
+
+.row:first-child {
+	align-items: center;
+}
+
+h1 {
+	margin: 0;
+	color: var(--darker, #173c32);
+	font-family: 'Manrope', sans-serif;
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 1.2;
+}
+
+.row:first-child .text-end {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.row:first-child .btn {
+	min-height: 44px;
+}
+
+.card {
+	border: 1px solid var(--gray, #dce4dd);
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 3px 14px rgba(20, 41, 31, 0.045);
+	overflow: hidden;
+}
+
+.card:hover {
+	border-color: var(--gray, #dce4dd);
+	box-shadow: 0 3px 14px rgba(20, 41, 31, 0.045);
+	transform: none;
+}
+
+.card-body {
+	padding: 16px;
+}
+
+.input-group .form-control {
+	min-width: 0;
+	min-height: 44px;
+	border-color: var(--gray-dark, #c3d0c7);
+}
+
+.input-group .btn {
+	min-height: 44px;
+	white-space: nowrap;
+}
+
+.table-responsive {
+	border-radius: 9px;
+}
+
+table {
+	min-width: 850px;
+}
+
+thead th {
+	white-space: nowrap;
+}
+
+tbody td {
+	vertical-align: middle;
+}
+
+tbody td:first-child {
+	min-width: 165px;
+	color: var(--darker, #173c32);
+}
+
+tbody td:last-child {
+	min-width: 126px;
+	white-space: nowrap;
+}
+
+tbody td:last-child .btn {
+	width: 34px;
+	height: 34px;
+	min-height: 34px;
+	padding: 0;
+}
+
+tbody td:last-child .btn + .btn {
+	margin-left: 4px;
+}
+
+tbody td:last-child .btn-warning {
+	color: #173c32;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible {
+	outline: 3px solid rgba(22, 116, 93, 0.22);
+	outline-offset: 2px;
+}
+
+@media (max-width: 767.98px) {
+	.container {
+		padding: 20px 14px 32px;
+	}
+
+	.row:first-child {
+		row-gap: 14px;
+	}
+
+	h1 {
+		font-size: 26px;
+	}
+
+	.row:first-child .text-end {
+		justify-content: flex-start;
+		text-align: left !important;
+	}
+
+	.card-body {
+		padding: 12px;
+	}
+
+	.input-group .btn {
+		padding-inline: 12px;
+	}
+}
+
+@media (max-width: 420px) {
+	.input-group .btn {
+		width: 44px;
+		overflow: hidden;
+		justify-content: center;
+		font-size: 0;
+	}
+
+	.input-group .btn i {
+		font-size: 16px;
+	}
+}

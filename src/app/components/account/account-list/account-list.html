@@ -1,0 +1,124 @@
+<!-- src/app/components/account/account-list.component.html -->
+ 
+<div class="container-fluid py-5">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1 class="display-4 mb-0">💳 Gestion des Comptes</h1>
+    </div>
+    <div class="col-md-4 text-end">
+      <a routerLink="/accounts/new" class="btn btn-primary btn-lg">
+        <i class="bi bi-plus-circle me-2"></i> Nouveau Compte
+      </a>
+    </div>
+  </div>
+ 
+  <!-- Carte des statistiques -->
+  <div class="row mb-4 g-3">
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Total des comptes</h5>
+          <h3 class="display-6 mb-0 text-primary">{{ totalAccounts }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Soldes par devise</h5>
+          <div class="currency-balance-list" *ngIf="currencyBalances.length">
+            <div class="currency-balance-row" *ngFor="let item of currencyBalances">
+              <span>{{ item.currency }}</span>
+              <strong>{{ item.balance | number: '1.2-2' }} {{ item.currency }}</strong>
+            </div>
+          </div>
+          <p class="text-muted mb-0" *ngIf="currencyBalances.length === 0">Aucun solde disponible</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Tableau des comptes -->
+  <div class="card shadow">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Numéro de Compte</th>
+            <th>Type</th>
+            <th>Titulaire</th>
+            <th>Solde</th>
+            <th>Devise</th>
+            <th>Statut</th>
+            <th>Date de création</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="loading">
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!loading && accounts.length === 0">
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+              Aucun compte trouvé
+            </td>
+          </tr>
+          <tr *ngFor="let account of accounts">
+            <td class="fw-bold">
+              <i class="bi bi-credit-card me-2"></i>
+              {{ account.accountNumber }}
+            </td>
+            <td>
+              <span class="badge bg-info">
+                {{ getAccountTypeIcon(account.accountType) }}
+                {{ account.accountType }}
+              </span>
+            </td>
+            <td>{{ getCustomerName(account.customerId) }}</td>
+            <td class="fw-bold text-success">{{ account.balance | number: '1.2-2' }}</td>
+            <td>{{ account.currency }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-success': account.status === 'ACTIVE',
+                'bg-warning': account.status === 'INACTIVE',
+                'bg-danger': account.status === 'CLOSED'
+              }">
+                {{ account.status }}
+              </span>
+            </td>
+            <td>{{ account.createdAt | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <button
+                (click)="selectAccount(account)"
+                class="btn btn-sm btn-info me-2"
+                title="Voir les détails"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+              <button
+                [routerLink]="['/accounts', account.id, 'history']"
+                class="btn btn-sm btn-secondary me-2"
+                title="Historique"
+              >
+                <i class="bi bi-clock-history"></i>
+              </button>
+              <button
+                (click)="deleteAccount(account.id)"
+                class="btn btn-sm btn-danger"
+                title="Supprimer"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+ 

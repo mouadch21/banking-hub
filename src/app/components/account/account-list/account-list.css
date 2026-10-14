@@ -1,0 +1,28 @@
+.currency-balance-list {
+	display: grid;
+	gap: 8px;
+}
+
+.currency-balance-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding-bottom: 7px;
+	border-bottom: 1px solid var(--gray, #dce4dd);
+	color: var(--dark-gray, #74847b);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.currency-balance-row:last-child {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+.currency-balance-row strong {
+	color: var(--darker, #173c32);
+	font-family: 'Manrope', sans-serif;
+	font-size: 16px;
+	text-align: right;
+}

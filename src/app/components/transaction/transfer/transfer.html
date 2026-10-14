@@ -1,0 +1,108 @@
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg">
+        <div class="card-header bg-info text-white py-4">
+          <h3 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i> Effectuer un Virement</h3>
+        </div>
+        <div class="card-body p-5">
+          <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- Compte source -->
+            <div class="mb-3">
+              <label for="fromAccountId" class="form-label fw-bold">Du compte *</label>
+              <select
+                class="form-select form-select-lg"
+                id="fromAccountId"
+                formControlName="fromAccountId"
+                [class.is-invalid]="submitted && f['fromAccountId'].errors"
+              >
+                <option [ngValue]="0" disabled>Compte source...</option>
+                <option *ngFor="let account of accounts" [ngValue]="account.id">
+                  {{ account.accountNumber }} - {{ account.balance | number: '1.2-2' }} {{ account.currency }}
+                </option>
+              </select>
+              <div class="invalid-feedback d-block" *ngIf="submitted && f['fromAccountId'].errors">
+                Veuillez choisir un compte source
+              </div>
+            </div>
+ 
+            <!-- Compte destination -->
+            <div class="mb-3">
+              <label for="toAccountId" class="form-label fw-bold">Vers le compte *</label>
+              <select
+                class="form-select form-select-lg"
+                id="toAccountId"
+                formControlName="toAccountId"
+                [class.is-invalid]="submitted && f['toAccountId'].errors"
+              >
+                <option [ngValue]="0" disabled>Compte destination...</option>
+                <option *ngFor="let account of accounts" [ngValue]="account.id">
+                  {{ account.accountNumber }} - {{ account.balance | number: '1.2-2' }} {{ account.currency }}
+                </option>
+              </select>
+              <div class="invalid-feedback d-block" *ngIf="submitted && f['toAccountId'].errors">
+                <span *ngIf="f['toAccountId'].errors['required'] || f['toAccountId'].errors['min']">Veuillez choisir un compte destination</span>
+                <span *ngIf="f['toAccountId'].errors['sameAccount']">Choisissez un compte différent du compte source.</span>
+              </div>
+            </div>
+ 
+            <!-- Montant -->
+            <div class="mb-3">
+              <label for="amount" class="form-label fw-bold">Montant *</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">€</span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="amount"
+                  formControlName="amount"
+                  [class.is-invalid]="submitted && f['amount'].errors"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="submitted && f['amount'].errors">
+                <span *ngIf="f['amount'].errors['required']">Le montant est requis</span>
+                <span *ngIf="f['amount'].errors['min']">Le montant doit être supérieur à 0</span>
+              </div>
+            </div>
+ 
+            <!-- Description -->
+            <div class="mb-4">
+              <label for="description" class="form-label fw-bold">Description</label>
+              <textarea
+                class="form-control form-control-lg"
+                id="description"
+                formControlName="description"
+                rows="3"
+                placeholder="Ex: Paiement facture..."
+              ></textarea>
+            </div>
+ 
+            <!-- Boutons -->
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-info btn-lg text-white"
+                [disabled]="loading"
+              >
+                <span *ngIf="!loading">
+                  <i class="bi bi-check-circle me-2"></i> Effectuer le virement
+                </span>
+                <span *ngIf="loading">
+                  <i class="spinner-border spinner-border-sm me-2"></i> En cours...
+                </span>
+              </button>
+              <a routerLink="/transactions" class="btn btn-light btn-lg">
+                <i class="bi bi-arrow-left me-2"></i> Retour
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
